@@ -1,0 +1,6 @@
+plugins.command.stalker.howto=/stalk <player's username> to stalk the specified player.
+command.installedPlugins.howto=Lists all installed, and enabled Plugins.
+menu.mods=Mods
+menu.languages=Languages
+plugins.select.tooltip=Select a plugin to enable or disable
+gui.config.plugin=Plugins

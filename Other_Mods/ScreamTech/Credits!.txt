@@ -1,0 +1,12 @@
+Credits to ScreamTech for his 3D Model Loader code, and his Shaders code too!
+
+For some reason, in the copyrights of the Shaders code, it says "Copyright (c) 2013, ScreamTech & Zerrox96"?
+So, Credits to ScreamTech for his 3D Model Loader, and also credits to ScreamTech and Zerrox96 for their Shaders code!
+
+In this folder, I've included the original sources of the original mods I've integrated into my modding library mod.
+
+Original 3D Model Loader Forum: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1284666-1-4-7-3d-loader-minecraft-api
+
+Original Shader API Forum: http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/1287892-1-4-7-shader-api
+
+And yes, I do have permission to redistribute his (their?) code.

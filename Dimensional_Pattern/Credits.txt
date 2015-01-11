@@ -1,0 +1,7 @@
+Originally made by: Jezzadabomb338 from the Minecraft-Forums.
+Thanks to him, I can now rule the world! :D
+Anyway, he deserves credit since his mod is modding api thing, is completely awesome, and more modders should definitely check it out!
+Again, thanks to Jezzadabomb338 for all of his work making this easy modding api for all of us!
+
+Link:
+http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/wip-mods/1446195-1-6-1-7-the-shad-multicore-system-multiblock-api
