@@ -15,6 +15,8 @@ import java.util.List;
 
 public class CoreMetadata implements IMetadata {
 
+    public static final IMetadata INSTANCE = new CoreMetadata();
+
     @Override
     public List<String> getAuthorList() {
         final List<String> authorList = new ArrayList<String>();
@@ -60,12 +62,12 @@ public class CoreMetadata implements IMetadata {
 
     @Override
     public String getModID() {
-        return ChatHelper.colourString(EnumChatFormatting.DARK_RED, CoreResources.CORE_MODID);
+        return ChatHelper.colourString(EnumChatFormatting.DARK_RED, CoreResources.CORE_LIBRARY_MOD_ID);
     }
 
     @Override
     public String getModName() {
-        return ChatHelper.colourString(EnumChatFormatting.DARK_RED, CoreResources.CORE_NAME);
+        return ChatHelper.colourString(EnumChatFormatting.DARK_RED, CoreResources.CORE_LIBRARY_NAME);
     }
 
     @Override
@@ -90,6 +92,6 @@ public class CoreMetadata implements IMetadata {
 
     @Override
     public String getModVersion() {
-        return ChatHelper.colourString(EnumChatFormatting.AQUA, CoreResources.CORE_VERSION);
+        return ChatHelper.colourString(EnumChatFormatting.AQUA, CoreResources.CORE_LIBRARY_VERSION);
     }
 }

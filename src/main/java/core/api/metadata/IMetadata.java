@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by Master801 on 10/3/2014.
+ * @author Master801
  */
 public interface IMetadata {
 

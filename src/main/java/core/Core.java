@@ -40,16 +40,16 @@ import java.util.UUID;
  * https://bitbucket.org/master801/801-core/
  * @author Master801
  */
-@Mod(modid = CoreResources.CORE_MODID, name = CoreResources.CORE_NAME, version = CoreResources.CORE_VERSION, guiFactory = CoreResources.CORE_GUI_FACTORY)
+@Mod(modid = CoreResources.CORE_LIBRARY_MOD_ID, name = CoreResources.CORE_LIBRARY_NAME, version = CoreResources.CORE_LIBRARY_VERSION, guiFactory = CoreResources.CORE_GUI_FACTORY)
 public final class Core implements IMod, IUpdateableMod {
 
-	@Instance(CoreResources.CORE_MODID)
+	@Instance(CoreResources.CORE_LIBRARY_MOD_ID)
 	public static IMod instance;
 
-    @SidedProxy(serverSide = CoreResources.CORE_PROXY_SERVER, clientSide = CoreResources.CORE_PROXY_CLIENT, modId = CoreResources.CORE_MODID)
+    @SidedProxy(serverSide = CoreResources.CORE_LIBRARY_PROXY_SERVER, clientSide = CoreResources.CORE_LIBRARY_PROXY_CLIENT, modId = CoreResources.CORE_LIBRARY_MOD_ID)
     public static IProxy proxy;
 
-	@Metadata(CoreResources.CORE_MODID)
+	@Metadata(CoreResources.CORE_LIBRARY_MOD_ID)
 	public static ModMetadata metadata;
 
     @EventHandler
@@ -133,7 +133,7 @@ public final class Core implements IMod, IUpdateableMod {
 
 	@Override
 	public String getModID() {
-		return CoreResources.CORE_MODID;
+		return CoreResources.CORE_LIBRARY_MOD_ID;
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public final class Core implements IMod, IUpdateableMod {
 
 	@Override
 	public String getCurrentVersion() {
-		return CoreResources.CORE_VERSION;
+		return CoreResources.CORE_LIBRARY_VERSION;
 	}
 
 	@Override

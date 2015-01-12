@@ -29,6 +29,8 @@ minecraft {
     version = "1.7.10-10.13.2.1286"
     runDir = "build"
     replace "@MOD_VERSION@", project.version
+    replace "@API_VERSION@", "1.2.0"//TODO Make this a field.
+    replace "@CORE_VERSION@", "1.0.0"//TODO Make this a field.
     replace "@BUILD@", "@Do_Not_Build@"
 }
 
@@ -50,6 +52,12 @@ task makeDeobfuscatedJar(type: Jar) {
 task makeJavaDocsJar(type: Jar) {
     from javadoc.destinationDir
     classifier = 'javadoc'
+}
+
+jar {
+    manifest {
+        attributes 'FMLAT': 'core_AT.cfg'
+    }
 }
 
 build.dependsOn makeSourcesJar, makeDeobfuscatedJar, makeJavaDocsJar

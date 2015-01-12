@@ -90,7 +90,7 @@ public final class RandomHelper {
         return floats;
     }
 
-    public static <T> boolean doesArrayContainAnObject(T[] array) {
+    public static <T> boolean doesArrayContainAnValidObject(T[] array) {
         if (array.length <= 0) {
             return false;
         }
@@ -98,6 +98,7 @@ public final class RandomHelper {
         for(T anObject : array) {
             if (anObject == null) {
                 doesContainAnObject = false;
+                break;
             }
         }
         return doesContainAnObject;

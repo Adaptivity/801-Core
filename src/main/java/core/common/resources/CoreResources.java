@@ -27,6 +27,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.server.MinecraftServer;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,17 +38,17 @@ import java.util.Random;
 
 public final class CoreResources {
 
-	public static final String CORE_MODID = "801-Core";
-	public static final String CORE_NAME = CoreResources.CORE_MODID;
-	public static final String CORE_VERSION = "@MOD_VERSION@";
-	public static final String CORE_PROXY_SERVER = "core.proxies.CoreCommonProxy";
-	public static final String CORE_PROXY_CLIENT = "core.proxies.CoreClientProxy";
+	public static final String CORE_LIBRARY_MOD_ID = "801-Library";
+	public static final String CORE_LIBRARY_NAME = CoreResources.CORE_LIBRARY_MOD_ID;
+	public static final String CORE_LIBRARY_VERSION = "@MOD_VERSION@";
+	public static final String CORE_LIBRARY_PROXY_SERVER = "core.proxies.CoreCommonProxy";
+	public static final String CORE_LIBRARY_PROXY_CLIENT = "core.proxies.CoreClientProxy";
 	private static final String GRADLE_BUILDING = "@BUILD@";
 	private static final Random RANDOM = new Random();
 	public static final String CORE_GUI_FACTORY = "core.client.gui.config.GuiConfigCoreFactory";
-    public static final IConfigFile CORE_CONFIG_FILE = ConfigFileHelper.createNewConfigFile(Core.instance, "801-Core", " \n Library mod for all of Master801's mods.\n ");
+    public static final IConfigFile CORE_CONFIG_FILE = ConfigFileHelper.createNewConfigFile(Core.instance, "801-Library", " \nLibrary mod for all of Master801's mods.\n");
     private static final Map<IMod, Logger> LOGGER_MAP = new HashMap<IMod, Logger>();
-    private static final CreativeTabs CORE_CREATIVE_TAB = new CreativeTabs("801Core.name") {
+    public static final CreativeTabs CORE_LIBRARY_CREATIVE_TAB = new CreativeTabs("801Core.name") {
 
 		@Override
 		@SideOnly(Side.CLIENT)
@@ -59,7 +60,9 @@ public final class CoreResources {
 
     public static Logger getLogger(IMod mod) {
 		if (mod == null) {
-			return null;
+            Logger logger = LogManager.getLogger("null");
+            logger.log(Level.WARN, "**Error**");
+			return logger;
 		}
 		Logger logger = CoreResources.LOGGER_MAP.get(mod);
 		if (logger != null) {
@@ -71,18 +74,14 @@ public final class CoreResources {
         return logger;
     }
 
-	public static CreativeTabs getCoreCreativeTab() {
-		return CORE_CREATIVE_TAB;
-	}
-
 	/**
 	 * @return The configuration directory of 801-Core.
 	 */
 	public static File getCoreConfigDir() {
 		File configDir = Loader.instance().getConfigDir();
-		File coreDir = new File(configDir + "/801-Core/");
-		boolean hasBeenMade = true;
-        if (!coreDir.exists()) {
+		File coreDir = new File(configDir, CoreResources.CORE_LIBRARY_MOD_ID);
+		boolean hasBeenMade = coreDir.exists();
+        if (!hasBeenMade) {
 			hasBeenMade = coreDir.mkdir();
 		}
         if (coreDir.exists() && hasBeenMade) {
@@ -118,9 +117,6 @@ public final class CoreResources {
 	    return CoreResources.getMinecraft().getLanguageManager();
     }
 
-	/**
-	 * Seriously... this is the main dir. I have no idea how this is it, but it is.
-	 */
 	public static File getMainDir() {
 		return new File(".");
 	}
@@ -170,12 +166,6 @@ public final class CoreResources {
 	public static Side getSide() {
 		return FMLCommonHandler.instance().getEffectiveSide();
 	}
-
-    static {
-        if (CoreResources.LOGGER_MAP.get(Core.instance) == null) {
-            CoreResources.LOGGER_MAP.put(Core.instance, LogManager.getLogger(Core.instance.getModID()));
-        }
-    }
 
 	//Hidden text for me. -Master801
 	/*
