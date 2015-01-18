@@ -1,7 +1,6 @@
 package core.helpers;
 
 import core.Core;
-import core.api.common.mod.IMod;
 import core.common.resources.CoreEnums.LoggerEnum;
 import core.exceptions.CoreExceptions.CoreNullPointerException;
 import cpw.mods.fml.common.Mod;
@@ -28,36 +27,6 @@ public final class ExternalModsHelper {
 			LoggerHelper.addMessageToLogger(Core.instance, LoggerEnum.INFO, "Did not find ForgeMultipart...");
 		}
 	}
-
-	public static ItemStack getIC2ItemStack(String name) {
-		if (name == null) {
-			return null;
-		}
-		ItemStack gotStack = ReflectionHelper.getFieldValue(ReflectionHelper.getField("ic2.core.Ic2Items", name), null);
-		if (gotStack == null) {
-			throw new CoreNullPointerException("The ItemStack got from IC2, is null! Item: '%s'.", name);
-		}
-		return gotStack;
-	}
-
-    public static ItemStack getIC2ClassicItemStack(String name) {
-        if (name == null) {
-            return null;
-        }
-        ItemStack gotStack = ReflectionHelper.getFieldValue(ReflectionHelper.getField("ic2classic.core.Ic2Items", name), null);
-        if (gotStack == null) {
-            throw new CoreNullPointerException("The ItemStack got from IC2-Classic is null! Item: '%s'", name);
-        }
-        return gotStack;
-    }
-
-    public static void setIC2ItemStack(String fieldName, ItemStack newItemStack) {
-        ReflectionHelper.setFieldValue(ReflectionHelper.getField("ic2.core.Ic2Items", fieldName), null, newItemStack);
-    }
-
-    public static void setIC2ClassItemStack(String fieldName, ItemStack newItemStack) {
-        ReflectionHelper.setFieldValue(ReflectionHelper.getField("ic2classic.core.Ic2Items", fieldName), null, newItemStack);
-    }
 
 	public static String getModIDFromClass(Class<?> modClass) {
         if (modClass != null) {
@@ -125,7 +94,7 @@ public final class ExternalModsHelper {
     }
 
     public static Item getCogsCogwheelItem() {
-        return ReflectionHelper.getFieldValue(ReflectionHelper.getField("deatrathias.cogs.util.ItemLoader", "itemCogwheel"), null);
+        return ReflectionHelper.getFieldValue(ReflectionHelper.getField(ReflectionHelper.getClassFromString("deatrathias.cogs.util.ItemLoader", true), "itemCogwheel"), null, true);
     }
 
     public static ItemStack getCogStack(String fieldName) {
@@ -140,7 +109,7 @@ public final class ExternalModsHelper {
         if (fieldName == null) {
             return null;
         }
-        Object unknownObject = ReflectionHelper.getFieldValue(ReflectionHelper.getField("deatrathias.cogs.util.ItemLoader", fieldName), null);
+        Object unknownObject = ReflectionHelper.getFieldValue(ReflectionHelper.getField(ReflectionHelper.getClassFromString("deatrathias.cogs.util.ItemLoader", true), fieldName), null, true);
         if (unknownObject == null) {
             LoggerHelper.addAdvancedMessageToLogger(Core.instance, LoggerEnum.INFO, "Failed to get Cogs' object! Field: '%s'", fieldName);
             return null;

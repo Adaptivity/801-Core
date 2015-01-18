@@ -5,7 +5,6 @@ import core.common.resources.CoreEnums;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.AdvancedModelLoader;
 import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
@@ -124,7 +123,7 @@ public final class WavefrontModelHelper {
                             faces[i] = RandomHelper.convertStringToFloat(splitFaces[i]);
                         }
                     }
-                    if (RandomHelper.doesArrayContainAnObject(RandomHelper.convertFloatArrayToFloatArray(faces))) {
+                    if (RandomHelper.doesArrayContainAnValidObject(RandomHelper.convertFloatArrayToFloatArray(faces))) {
                         ListHelper.addObjectToListWhileChecking(this.faces, new Face(faces));
                     }
                 }

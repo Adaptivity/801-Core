@@ -1,7 +1,6 @@
 package core.helpers;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Master801 on 12/7/2014 at 9:14 AM.
@@ -44,6 +43,22 @@ public final class ListHelper {
             return objectArray;
         }
         return null;
+    }
+
+    public static <A> List<A> convertCollectionToList(Collection<A> collection) {
+        List<A> newList = new ArrayList<A>();
+        for(int i = 0; i < collection.size(); i++) {
+            newList.add(i, (A)collection.toArray()[i]);
+        }
+        return newList;
+    }
+
+    public static <A> List<A> convertSetToList(Set<A> set) {
+        List<A> newList = new ArrayList<A>();
+        for(int i = 0; i < set.size(); i++) {
+            newList.add(i, (A)set.toArray()[i]);
+        }
+        return newList;
     }
 
 }

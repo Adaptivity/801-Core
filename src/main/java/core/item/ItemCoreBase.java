@@ -32,14 +32,21 @@ import java.util.UUID;
  */
 public abstract class ItemCoreBase extends Item implements IGuiHelper, IGUId {
 
+    @SideOnly(Side.CLIENT)
 	public abstract String getUnlocalizedName(int metadata);
 
     @SideOnly(Side.CLIENT)
     protected abstract void registerIcons(TextureMap textureMap);
 
-	public ItemCoreBase(boolean doesHaveSubtypes) {
-		setCreativeTab(CoreResources.getCoreCreativeTab()); //This is set to the default tab.
-		setFull3D();
+    public ItemCoreBase(boolean doesHaveSubtypes) {
+        this(doesHaveSubtypes, false);
+    }
+
+	public ItemCoreBase(boolean doesHaveSubtypes, boolean full3d) {
+		setCreativeTab(CoreResources.CORE_LIBRARY_CREATIVE_TAB); //This is set to the default tab.
+        if (full3d) {
+            setFull3D();
+        }
 		if (doesHaveSubtypes) {
 			setMaxDamage(0);
 			setHasSubtypes(true);

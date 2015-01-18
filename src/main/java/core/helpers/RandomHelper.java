@@ -2,6 +2,8 @@ package core.helpers;
 
 import net.minecraft.util.ResourceLocation;
 
+import java.util.*;
+
 /**
  * Created by Master801 on 11/11/2014.
  * @author Master801
@@ -110,6 +112,19 @@ public final class RandomHelper {
 
     public static String convertResourceLocationToString(ResourceLocation resource) {
         return "/assets/" + resource.getResourceDomain() + resource.getResourcePath();
+    }
+
+    /**
+     * Changes all of the map's values to keys and keys to values.
+     */
+    public static <A, B> Map<B, A> reverseMapContents(Map<A, B> map) {
+        Map<B, A> reversedMap = new HashMap<B, A>();
+        List<A> keysList = ListHelper.convertSetToList(map.keySet());
+        List<B> valuesList = ListHelper.convertCollectionToList(map.values());
+        for(int i = 0; i < reversedMap.size(); i++) {
+            reversedMap.put(valuesList.get(i), keysList.get(i));
+        }
+        return reversedMap;
     }
 
 }

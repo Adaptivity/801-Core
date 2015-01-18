@@ -319,7 +319,7 @@ public final class TextureHelper {
         }
 
         public boolean doesUseResourceLocation() {
-            return useResourceLocation;
+            return useResourceLocation && getResourceLocation() != null;
         }
 
     }

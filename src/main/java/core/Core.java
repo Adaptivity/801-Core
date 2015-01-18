@@ -6,16 +6,13 @@ import core.api.network.proxy.IProxy;
 import core.block.test.BlockTestGuiAnimation;
 import core.commands.CommandInstalledPlugins;
 import core.common.FuelHandlerCoreBase;
+import core.common.resources.CoreEnums.LoggerEnum;
 import core.common.resources.CoreMetadata;
 import core.common.resources.CoreResources;
 import core.exceptions.CoreExceptions.CoreNullPointerException;
-import core.common.resources.CoreEnums.LoggerEnum;
 import core.helpers.*;
 import core.item.misc.test.ItemDebugTesting;
 import core.item.tools.misc.ItemToolWrench;
-import core.plugins.PluginAchievements;
-import core.plugins.PluginGravel;
-import core.plugins.PluginMenuOverhaul;
 import core.plugins.PluginPlayerStalker;
 import core.tileentity.test.TileEntityTestGuiAnimation;
 import core.utilities.CoreUtilities;
@@ -54,10 +51,6 @@ public final class Core implements IMod, IUpdateableMod {
 
     @EventHandler
     public static void preInit(FMLPreInitializationEvent event) {
-        PluginHelper.INSTANCE.addPlugin(PluginPlayerStalker.class);
-        PluginHelper.INSTANCE.addPlugin(PluginGravel.class);
-        PluginHelper.INSTANCE.addPlugin(PluginAchievements.class);
-        PluginHelper.INSTANCE.addPlugin(PluginMenuOverhaul.class);
         CoreResources.CORE_CONFIG_FILE.loadConfigFile();
         for(Class pluginClass : PluginHelper.INSTANCE.PLUGIN_LIST) {
             CoreResources.CORE_CONFIG_FILE.setValueFromKey(StringHelper.advancedMessage("Enable %s Plugin", PluginHelper.INSTANCE.getPluginName(pluginClass)), !PluginHelper.INSTANCE.isPluginDisabled(pluginClass));

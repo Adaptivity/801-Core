@@ -3,6 +3,7 @@ package core.common.resources;
 import core.Core;
 import core.api.common.IConfigFile;
 import core.api.common.mod.IMod;
+import core.asm.CoreASM;
 import core.exceptions.CoreExceptions.CoreNullPointerException;
 import core.helpers.ConfigFileHelper;
 import core.common.resources.CoreEnums.LoggerEnum;
@@ -15,6 +16,7 @@ import cpw.mods.fml.common.asm.transformers.deobf.FMLDeobfuscatingRemapper;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.CoreModManager;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
@@ -46,7 +48,7 @@ public final class CoreResources {
 	private static final String GRADLE_BUILDING = "@BUILD@";
 	private static final Random RANDOM = new Random();
 	public static final String CORE_GUI_FACTORY = "core.client.gui.config.GuiConfigCoreFactory";
-    public static final IConfigFile CORE_CONFIG_FILE = ConfigFileHelper.createNewConfigFile(Core.instance, "801-Library", " \nLibrary mod for all of Master801's mods.\n");
+    public static final IConfigFile CORE_CONFIG_FILE = ConfigFileHelper.createNewConfigFile(Core.instance, "801-Library", "\n Library mod for all of Master801's mods.\n");
     private static final Map<IMod, Logger> LOGGER_MAP = new HashMap<IMod, Logger>();
     public static final CreativeTabs CORE_LIBRARY_CREATIVE_TAB = new CreativeTabs("801Core.name") {
 
@@ -118,8 +120,8 @@ public final class CoreResources {
     }
 
 	public static File getMainDir() {
-		return new File(".");
-	}
+		return CoreASM.getMinecraftDirectory();
+    }
 
 	public static File getModsDir() {
 		return ReflectionHelper.getFieldValue(ReflectionHelper.getField(Loader.class, "canonicalModsDir"), Loader.instance());
@@ -164,8 +166,16 @@ public final class CoreResources {
 	}
 
 	public static Side getSide() {
-		return FMLCommonHandler.instance().getEffectiveSide();
+        Side side = FMLCommonHandler.instance().getEffectiveSide();
+        if (side != null) {
+            return side;
+        }
+		return Side.CLIENT;
 	}
+
+    public static boolean isDeObfuscatedEnvironment() {
+        return ReflectionHelper.getFieldValue(ReflectionHelper.getField(CoreModManager.class, "deobfuscatedEnvironment"), null);
+    }
 
 	//Hidden text for me. -Master801
 	/*

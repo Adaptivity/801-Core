@@ -18,12 +18,21 @@ import java.lang.reflect.Modifier;
 public final class ReflectionHelper {
 
     public static Class<?> getClassFromString(String clazz) {
+        return ReflectionHelper.getClassFromString(clazz, false);
+    }
+
+    public static Class<?> getClassFromString(String clazz, boolean ignoreErrors) {
         try {
             return Class.forName(clazz.replace('/', '.'));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            if (!ignoreErrors) {
+                e.printStackTrace();
+            }
+        }
+        if (!ignoreErrors) {
             throw new CoreNullPointerException("Failed to find the specified Class! Class: '%s'", clazz);
         }
+        return null;
     }
 
     public static String getStringFromClass(Class<?> clazz) {
@@ -61,21 +70,21 @@ public final class ReflectionHelper {
 		return ReflectionHelper.getMethod(ReflectionHelper.getStringFromClass(clazz), methodName, parameters);
 	}
 
+    public static Field getField(Class<?> clazz, String fieldName) {
+        return ReflectionHelper.getField(clazz, fieldName, false);
+    }
+
 	/**
 	 * Gets a field from the specified class file name.
 	 */
-	public static Field getField(String classFileName, String fieldName) {
+	public static Field getField(Class<?> clazz, String fieldName, boolean ignoreErrors) {
 		Field field = null;
-		if (classFileName == null) {
-			throw new CoreNullPointerException("ClassFileName for 'getField' in ReflectionHelper, is null!");
-		}
-		if (fieldName == null) {
-			throw new CoreNullPointerException("FieldName for 'getField' in ReflectionHelper, is null!");
-		}
 		try {
-			field = ReflectionHelper.getClassFromString(classFileName).getDeclaredField(fieldName);
+			field = clazz.getDeclaredField(fieldName);
 		} catch (Exception e) {
-			e.printStackTrace();
+            if (!ignoreErrors) {
+                e.printStackTrace();
+            }
 		}
 		if (field != null) {
 			if (!field.isAccessible()) {
@@ -83,13 +92,19 @@ public final class ReflectionHelper {
 			}
 			return field;
 		}
-		try {
-			LoggerHelper.addMessageToLogger(Core.instance, LoggerEnum.ERROR, "Failed to get field from class file! Class: " + Class.forName(classFileName).getName() + " Field Name: " + fieldName);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
+        if (!ignoreErrors) {
+            LoggerHelper.addMessageToLogger(Core.instance, LoggerEnum.ERROR, "Failed to get field from class file! Class: " + clazz.getName() + " Field Name: " + fieldName);
+        }
 		return null;
 	}
+
+    public static Field getField(String clazz, String fieldName) {
+        return ReflectionHelper.getField(clazz, fieldName, false);
+    }
+
+    public static Field getField(String clazz, String fieldName, boolean ignoreErrors) {
+        return ReflectionHelper.getField(ReflectionHelper.getClassFromString(clazz), fieldName, ignoreErrors);
+    }
 
 	/**
 	 * Gets all of the methods from the specified class file. If the class file already exists, just use (Class File Name).getName() for the classFileName parameter.
@@ -105,6 +120,10 @@ public final class ReflectionHelper {
         return null;
 	}
 
+    public static Method[] getMethods(Class<?> unknownClass) {
+        return ReflectionHelper.getMethods(ReflectionHelper.getStringFromClass(unknownClass));
+    }
+
 	/**
 	 * Gets all of the fields from the specified class file. If the class file already exists, just use (Class File Name).getName() for the classFileName parameter.
 	 */
@@ -118,6 +137,10 @@ public final class ReflectionHelper {
 		}
         return null;
 	}
+
+    public static Field[] getFields(Class<?> unknownClass) {
+        return ReflectionHelper.getFields(ReflectionHelper.getStringFromClass(unknownClass));
+    }
 
 	/**
 	 * Automatically sets the method to be accessible! No need for having to do wonky things!
@@ -184,12 +207,19 @@ public final class ReflectionHelper {
         }
     }
 
+    public static <T> T getFieldValue(Field field, Object instance) {
+        return ReflectionHelper.getFieldValue(field, instance, false);
+    }
+
 	/**
 	 * Used only to get the Field's value.
 	 */
-	public static <T> T getFieldValue(Field field, Object instance) {
+	public static <T> T getFieldValue(Field field, Object instance, boolean ignoreErrors) {
 		if (field == null) {
-			throw new CoreNullPointerException("The Field is null!");
+            if (!ignoreErrors) {
+                throw new CoreNullPointerException("The Field is null!");
+            }
+            return null;
 		}
 		try {
             if (!field.isAccessible()) {
@@ -199,11 +229,10 @@ public final class ReflectionHelper {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-        throw new CoreNullPointerException("Failed to get the Field's value!");
-	}
-
-	public static Field getField(Class clazz, String fieldName) {
-		return ReflectionHelper.getField(clazz.getCanonicalName(), fieldName);
+        if (!ignoreErrors) {
+            throw new CoreNullPointerException("Failed to get the Field's value!");
+        }
+        return null;
 	}
 
 	public static <T> Constructor<T> getConstructor(Class<T> clazz, ClassParameters parameters) {

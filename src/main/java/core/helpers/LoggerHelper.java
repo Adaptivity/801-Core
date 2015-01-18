@@ -33,7 +33,9 @@ public final class LoggerHelper {
             } else {
                 CoreResources.getLogger(mod).log(level.getLevel(), StringHelper.advancedMessage(String.valueOf(message), advanced));
 			}
+            return;
 		}
+        CoreResources.getLogger(mod).log(level.getLevel(), StringHelper.advancedMessage(String.valueOf(message), advanced));
 	}
 
 }

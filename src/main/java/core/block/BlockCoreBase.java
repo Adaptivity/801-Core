@@ -66,7 +66,7 @@ public abstract class BlockCoreBase extends BlockContainer implements IGUId {
     protected BlockCoreBase(Material material, boolean doesHaveSubtypes) {
         super(material);
         this.doesHaveSubtypes = doesHaveSubtypes;
-        setCreativeTab(CoreResources.getCoreCreativeTab());
+        setCreativeTab(CoreResources.CORE_LIBRARY_CREATIVE_TAB);
         setHardness(2.0F);
     }
 

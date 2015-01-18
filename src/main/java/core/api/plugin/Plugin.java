@@ -1,12 +1,12 @@
 package core.api.plugin;
 
+import core.Core;
+import net.minecraft.util.EnumChatFormatting;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import net.minecraft.util.EnumChatFormatting;
-import core.Core;
 
 /**
  * I'm sorry FML if this is too much based off of your methods.
@@ -36,22 +36,6 @@ public @interface Plugin {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.METHOD)
 	public @interface PluginEventHandler {
-	}
-
-	/**
-	 * @author Master801
-	 */
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.TYPE)
-	public @interface PluginVersionChecker {
-
-		boolean doesCheckForVersion() default false;
-
-		/**
-		 * The String value of the URL you want to check for an update.
-		 */
-		String value() default "";
-
 	}
 
 	/**

@@ -44,7 +44,7 @@ public abstract class MethodsTransformer extends ClassTransformerCoreBase {
     protected abstract MethodSignature getMethodSignature(MethodNames methodNames);
 
     @Override
-    protected final byte[] transformClass(String transformingClassName1, String transformingClassName2, byte[] classData) {
+    protected final byte[] transformClass(String transformingClassName1, byte[] classData) {
         String className;
         if (transformingClassName1.equals(className = getTransformingClassName().getDeobfuscatedName())) {
             return privatelyTransformMethods(className, classData, false);

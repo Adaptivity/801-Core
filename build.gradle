@@ -21,22 +21,26 @@ apply plugin: 'forge'
 sourceCompatibility = "1.6"
 targetCompatibility = "1.7"
 
-version = "2.9.0"
+version = project.properties['Version']
 group = "core.Core"
 archivesBaseName = "801-Core"
 
 minecraft {
+//    version = "" + project.properties['Forge_Version']//FIXME
     version = "1.7.10-10.13.2.1286"
     runDir = "build"
     replace "@MOD_VERSION@", project.version
-    replace "@API_VERSION@", "1.2.0"//TODO Make this a field.
-    replace "@CORE_VERSION@", "1.0.0"//TODO Make this a field.
+    replace "@API_VERSION@", project.properties['API_Version']
+    replace "@CORE_VERSION@", project.properties['Core_Version']
     replace "@BUILD@", "@Do_Not_Build@"
 }
 
 processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
+    from(sourceSets.main.resources.srcDirs) {
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
 }
 
 task makeSourcesJar(type: Jar) {

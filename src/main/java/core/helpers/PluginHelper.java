@@ -5,18 +5,17 @@ import core.api.common.mod.IMod;
 import core.api.plugin.IPlugin;
 import core.api.plugin.Plugin;
 import core.api.plugin.Plugin.PluginEventHandler;
-import core.api.plugin.Plugin.PluginInstance;
-import core.api.plugin.Plugin.PluginVersionChecker;
 import core.common.resources.CoreEnums.LoggerEnum;
 import core.common.resources.CoreResources;
 import core.exceptions.CoreExceptions.CoreNullPointerException;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLStateEvent;
 
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Master801
@@ -28,79 +27,6 @@ public final class PluginHelper {
     private final List<Class<?>> DISABLED_PLUGINS_LIST = new ArrayList<Class<?>>();
 
 	public static final PluginHelper INSTANCE = new PluginHelper();
-
-	/**
-	 * For adding new Plugins with the Plugin annotation.
-	 * Make sure to load the plugins first before anything else happens, or else crashing will commence.
-	 */
-	public void addPlugin(Class<?> pluginClass) {
-		Plugin plugin = null;
-		PluginEventHandler eventHandler = null;
-		PluginVersionChecker checker = null;
-		if (pluginClass.isAnnotationPresent(Plugin.class)) {
-			plugin = pluginClass.getAnnotation(Plugin.class);
-            PLUGIN_LIST.add(pluginClass);
-		} else {
-            return;
-        }
-        String pluginName = plugin.name();
-		if (pluginClass.isAnnotationPresent(PluginVersionChecker.class)) {
-			checker = pluginClass.getAnnotation(PluginVersionChecker.class);
-			if (checker.doesCheckForVersion()) {
-				if (checker.value() != null) {
-					InputStream stream = InputStreamHelper.getStreamFromURL(checker.value());
-					Scanner scanner = new Scanner(stream);
-					String checkedVersion = null;
-					do {
-						if (scanner.nextLine().equalsIgnoreCase("#VERSION")) {
-							checkedVersion = scanner.nextLine();
-						}
-					} while(scanner.hasNextLine());
-					scanner.close();
-					InputStreamHelper.closeInputStream(stream);
-                    IMod modInstance = null;
-                    for(Field field : plugin.owner().getDeclaredFields()) {
-                        field.setAccessible(true);
-                        if (field.getAnnotation(Instance.class) != null) {
-                            try {
-                                modInstance = (IMod)field.get(null);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                    if (!plugin.version().toLowerCase().equalsIgnoreCase(checkedVersion)) {
-                        LoggerHelper.addAdvancedMessageToLogger(modInstance, LoggerEnum.INFO, "A new update is available for Plugin '%s'! New Version: '%s', Current Version: '%s'.", pluginName, checkedVersion, plugin.version());
-                    } else {
-                        LoggerHelper.addAdvancedMessageToLogger(modInstance, LoggerEnum.INFO, "The update URL for Plugin '%s' is either, null, or not specified. URL: '%s'", pluginName);
-                    }
-				}
-			}
-		}
-		for(Field field : pluginClass.getDeclaredFields()) {
-			if (field.isAnnotationPresent(PluginInstance.class)) {
-				Object instance = null;
-				try {
-                    instance = pluginClass.newInstance();
-				} catch(Exception e) {
-					e.printStackTrace();
-                    throw new CoreNullPointerException("Failed to institate the Plugin! Plugin: '%s'.", pluginName);
-				}
-				if (instance == null) {
-					throw new CoreNullPointerException("The Plugin's 'instance' is null! Plugin: '%s'.", pluginName);
-				}
-                PLUGIN_INSTANCES_MAP.put(pluginName, instance);
-				if (field.getAnnotation(PluginInstance.class) != null) {
-                    if (!ReflectionHelper.isModifierFinal(field)) {
-                        ReflectionHelper.setFieldValue(field, instance, instance);
-                    } else {
-                        throw new CoreNullPointerException("The Plugin's instance field is final! Plugin: '%s'", pluginName);
-                    }
-                    LoggerHelper.addAdvancedMessageToLogger(Core.instance, LoggerEnum.INFO, "Successfully set %s's instance field!", pluginName);
-				}
-			}
-		}
-	}
 
 	public void startAllPluginEvents(FMLStateEvent event) {
 		if (PLUGIN_LIST.isEmpty()) {
@@ -195,7 +121,7 @@ public final class PluginHelper {
             instance = ReflectionHelper.getFieldValue(field, PluginHelper.INSTANCE.getPluginInstanceFromName(plugin.name()));
             field.setAccessible(isAccessible);
             if (instance == null) {
-                throw new CoreNullPointerException("Apparently I failed to get the plugin's instance? Class: '%s'", pluginClass.toString());
+                throw new CoreNullPointerException("Failed to get the plugin's instance? Class: '%s'", pluginClass.toString());
             }
         }
         return instance;
@@ -215,6 +141,13 @@ public final class PluginHelper {
                 PluginHelper.INSTANCE.DISABLED_PLUGINS_LIST.add(pluginClass);
             }
         }
+    }
+
+    public void injectInstance(Class<?> pluginClass, Object instance) {
+        if (!pluginClass.isAnnotationPresent(Plugin.class)) {
+            return;
+        }
+        PluginHelper.INSTANCE.PLUGIN_INSTANCES_MAP.put(pluginClass.getAnnotation(Plugin.class).name(), instance);
     }
 
 }
